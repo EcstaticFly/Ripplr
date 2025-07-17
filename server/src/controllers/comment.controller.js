@@ -3,8 +3,8 @@ import Comment from "../models/comment.model.js";
 import { getAuth } from "@clerk/express";
 import User from "../models/user.model.js";
 import Post from "../models/post.model.js";
-import Comment from "../models/comment.model.js";
 import Notification from "../models/notification.model.js";
+import mongoose from "mongoose";
 
 export const getComments = asyncHandler(async (req, res) => {
   const { postId } = req.params;
@@ -32,15 +32,31 @@ export const createComment = asyncHandler(async (req, res) => {
     return res.status(404).json({ error: "User or post not found" });
   }
 
-  const comment = await Comment.create({
-    user: user._id,
-    post: postId,
-    content,
-  });
+  const session = await mongoose.startSession();
+  let comment;
 
-  await Post.findByIdAndUpdate(postId, {
-    $push: { comments: comment._id },
-  });
+  try {
+    await session.withTransaction(async () => {
+      comment = await Comment.create(
+        {
+          user: user._id,
+          post: postId,
+          content,
+        },
+        { session }
+      );
+
+      await Post.findByIdAndUpdate(
+        postId,
+        {
+          $push: { comments: comment._id },
+        },
+        { session }
+      );
+    });
+  } finally {
+    await session.endSession();
+  }
 
   if (user._id.toString() !== post.user.toString()) {
     await Notification.create({
