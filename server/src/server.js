@@ -6,6 +6,7 @@ import { connectDB } from "./configs/db.js";
 import userRoutes from "./routes/user.route.js";
 import postRoutes from "./routes/post.route.js";
 import commentRoutes from "./routes/comment.route.js";
+import notificationRoutes from "./routes/notification.route.js";
 
 const app = express();
 app.use(cors());
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/posts", postRoutes);
 app.use("/api/v1/comments", commentRoutes);
+app.use("/api/v1/notifications", notificationRoutes);
 
 app.use((err, req, res, next) => {
   console.error("Unhandled error: ", err);
