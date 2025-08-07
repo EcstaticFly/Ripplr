@@ -1,15 +1,14 @@
 import express from "express";
-import * as CommentController from "../controllers/comment.controller.js";
-import { protectRoute } from "../middlewares/auth.middleware.js";
+import { protectRoute } from "../middleware/auth.middleware.js";
+import { createComment, getComments, deleteComment } from "../controllers/comment.controller.js";
 
 const router = express.Router();
 
-//public routes
-router.get("/post/:postId", CommentController.getComments);
+// public routes
+router.get("/post/:postId", getComments);
 
-//protected routes
-router.use(protectRoute);
-router.post("/post/:postId", CommentController.createComment);
-router.delete("/:commentId", CommentController.deleteComment);
+// protected routes
+router.post("/post/:postId", protectRoute, createComment);
+router.delete("/:commentId", protectRoute, deleteComment);
 
 export default router;
