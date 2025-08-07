@@ -1,18 +1,25 @@
 import express from "express";
-import * as PostController from "../controllers/post.controller.js";
-import { protectRoute } from "../middlewares/auth.middleware.js";
-import upload from "../middlewares/upload.middleware.js";
+import {
+  createPost,
+  deletePost,
+  getPost,
+  getPosts,
+  getUserPosts,
+  likePost,
+} from "../controllers/post.controller.js";
+import { protectRoute } from "../middleware/auth.middleware.js";
+import upload from "../middleware/upload.middleware.js";
+
 const router = express.Router();
 
-//public Routes
-router.get("/", PostController.getPosts);
-router.get("/:postId", PostController.getPostById);
-router.get("/user/:username", PostController.getUserPosts);
+// public routes
+router.get("/", getPosts);
+router.get("/:postId", getPost);
+router.get("/user/:username", getUserPosts);
 
-//protected Routes
-router.use(protectRoute);
-router.post("/", upload.single("image"), PostController.createPost);
-router.post("/:postId/like", PostController.likePost);
-router.delete("/:postId", PostController.deletePost)
+// protected proteced
+router.post("/", protectRoute, upload.single("image"), createPost);
+router.post("/:postId/like", protectRoute, likePost);
+router.delete("/:postId", protectRoute, deletePost);
 
 export default router;
