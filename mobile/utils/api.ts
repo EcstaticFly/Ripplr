@@ -48,3 +48,9 @@ export const commentApi = {
   createComment: (api: AxiosInstance, postId: string, content: string) =>
     api.post(`/comments/post/${postId}`, { content }),
 };
+
+export const notificationApi = {
+  getNotifications: (api: AxiosInstance) => api.get("/notifications"),
+  deleteNotification: (api: AxiosInstance, notificationId: string) =>
+    api.delete(`/notifications/${notificationId}`),
+};
