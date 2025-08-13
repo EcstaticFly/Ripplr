@@ -20,3 +20,8 @@ export default function RootLayout() {
     </ClerkProvider>
   );
 }
+
+//TODO:
+// 1. Optimistic Update for notification deletion, like.
+// 2. Add proper loading states where necessary
+// 3. Build the pending functionalities such as share, notifications setting, repost, messages etc.
