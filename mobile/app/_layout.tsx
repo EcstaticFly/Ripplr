@@ -25,3 +25,6 @@ export default function RootLayout() {
 // 1. Optimistic Update for notification deletion, like.
 // 2. Add proper loading states where necessary
 // 3. Build the pending functionalities such as share, notifications setting, repost, messages etc.
+// 4. Other person profile screen, follow functionality(backend ready)
+// 5. Delete Comment(backend ready)
+// 6. Update Profile Image and Banner
